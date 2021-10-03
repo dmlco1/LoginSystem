@@ -6,10 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 
-
-
 // Login page
-public class Login implements ActionListener {
+public class Login implements ActionListener{
     public final static int SCREEN_HEIGHT = 300;
     public final static int SCREEN_WIDTH = 300;
 
@@ -19,13 +17,13 @@ public class Login implements ActionListener {
     JTextField idField = new JTextField("ID");
     JPasswordField passwordField = new JPasswordField("Password", 10);
 
-    HashMap<Integer, String> userInfo;
+    HashMap<String, String> userInfo;
 
-    Login(HashMap<Integer, String> userLogin){
+    Login(HashMap<String, String> userLogin){
         // Copy of user data that can be accessible for other methods
         userInfo = userLogin;
         PrepareFrame(); // Create Frame
-        frameComponents(); // Add text fields, labels and buttons
+        frameComponents(this); // Add text fields, labels and buttons
     }
 
     // Set the JFrame before adding components
@@ -38,10 +36,11 @@ public class Login implements ActionListener {
     }
 
     // Add initial components to the Frame
-    private void frameComponents(){
+    private void frameComponents(Login login){
         loginButton.setBounds(100, 150, 100, 50);
         idField.setBounds(100, 50, 100, 30);
         frame.add(loginButton);
+        loginButton.addActionListener(login);
         frame.add(idField);
         frame.add(passwordField);
         // setBounds in passwordField needs to be after add method to work
@@ -50,9 +49,21 @@ public class Login implements ActionListener {
 
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton){
+            System.out.println("Hellooooo");
+            String userID = idField.getText();
+            // Get password but it`s a char, so we need to convert to String
+            String userPassword = String.valueOf(passwordField.getPassword());
 
+            // Check if user ID is correct
+            if (userInfo.containsKey(userID)){
+                if (userInfo.get(userID).equals(userPassword)){
+                    System.out.println("Login successful");
+                }
+            }
+        }
     }
-
 }
