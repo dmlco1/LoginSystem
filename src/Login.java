@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
 
 
@@ -35,6 +32,19 @@ public class Login implements ActionListener{
         frame.setVisible(true);
     }
 
+    private void checkCredentials(){
+        String userID = idField.getText();
+        // Get password but it`s a char, so we need to convert to String
+        String userPassword = String.valueOf(passwordField.getPassword());
+
+        // Check if user ID is correct
+        if (userInfo.containsKey(userID)){
+            if (userInfo.get(userID).equals(userPassword)){
+                System.out.println("Login successful");
+            }
+        }
+    }
+
     // Add initial components to the Frame
     private void frameComponents(Login login){
         loginButton.setBounds(100, 150, 100, 50);
@@ -46,6 +56,24 @@ public class Login implements ActionListener{
         // setBounds in passwordField needs to be after add method to work
         // No clue why this happens
         passwordField.setBounds(100, 100, 100, 30);
+        passwordField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER){
+                    //TODO: checkCredentials function here
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // Do nothing
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Do nothing
+            }
+        });
 
     }
 
@@ -53,17 +81,7 @@ public class Login implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton){
-            System.out.println("Hellooooo");
-            String userID = idField.getText();
-            // Get password but it`s a char, so we need to convert to String
-            String userPassword = String.valueOf(passwordField.getPassword());
-
-            // Check if user ID is correct
-            if (userInfo.containsKey(userID)){
-                if (userInfo.get(userID).equals(userPassword)){
-                    System.out.println("Login successful");
-                }
-            }
+            checkCredentials();
         }
     }
 }
